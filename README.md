@@ -21,11 +21,11 @@ A modern interactive chat interface built with Next.js, React, TypeScript, Tailw
 ## Screenshots
 
 ### Initial Chat Screen
-![Initial Chat Screen](screenshots/ss1.png)  
+![Initial Chat Screen](/screenshots/ss1.png)  
 *The chat starts with a welcome message and asks for the user's name.*
 
 ### Mobile View
-![Theme Switching](screenshots/ss2.png)  
+![Mobile View](/screenshots/ss2.png)  
 *Users can switch themes using the colored dots (blue, purple, green).*
 
 

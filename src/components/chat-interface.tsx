@@ -18,7 +18,7 @@ import {
 
 // Sample avatars
 const BOT_AVATAR = "https://api.dicebear.com/7.x/bottts/svg?seed=assistant"
-const USER_AVATAR = "https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+const USER_AVATAR = "https://api.dicebear.com/7.x/thumbs/svg?seed=user";
 
 const initialMessages: EnhancedMessageProps[] = [
     {
@@ -199,7 +199,7 @@ const ChatInterfaceContent: React.FC = () => {
                 setTimeout(() => {
                     const completeMessage: EnhancedMessageProps = {
                         id: `completion-${Date.now()}`,
-                        content: `Thank you, ${userName}! We've collected all the information we need. Someone from our team will reach out to you soon.`,
+                        content: `Thank you, ${userName}! We've collected all the information we need.\nSomeone from our team will reach out to you soon.`,
                         sender: "bot",
                         timestamp: new Date(),
                         avatar: BOT_AVATAR,
@@ -244,7 +244,7 @@ const ChatInterfaceContent: React.FC = () => {
             setTimeout(() => {
                 const completionMessage: EnhancedMessageProps = {
                     id: `completion-${Date.now()}`,
-                    content: `Thank you, ${userName}! We've collected all the information we need. Someone from our team will reach out to you soon.`,
+                    content: `Thank you, ${userName}! We've collected all the information we need.\nSomeone from our team will reach out to you soon.`,
                     sender: "bot",
                     timestamp: new Date(),
                     avatar: BOT_AVATAR,
@@ -279,7 +279,7 @@ const ChatInterfaceContent: React.FC = () => {
     };
 
     return (
-        <div className="relative flex flex-col min-h-screen rounded-xl overflow-hidden border border-gray-200 shadow-lg">
+        <div className="w-full max-w-6xl min-h-screen relative flex flex-col rounded-xl overflow-hidden border border-gray-200 shadow-lg">
             <ChatHeader
                 title="Welcome to Your Personal Assistant"
                 subtitle="Let's get started with your journey"
@@ -288,8 +288,8 @@ const ChatInterfaceContent: React.FC = () => {
 
             <div
                 ref={chatContainerRef}
-                className="flex-1 p-6 space-y-4 relative bg-white/80 backdrop-blur-sm"
-                style={{ zIndex: 10 }}
+                className="flex-1 p-6 space-y-5 bg-white/80 backdrop-blur-sm relative"
+                style={{ zIndex: 10, scrollBehavior: "smooth" }}
             >
                 <AnimatedBackground />
                 <AnimatePresence initial={false}>
@@ -300,42 +300,50 @@ const ChatInterfaceContent: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                             className={cn(
-                                "flex items-start gap-3",
+                                "flex items-start gap-4",
                                 message.sender === "user" ? "justify-end" : "justify-start"
                             )}
                         >
                             {message.sender === "bot" && (
                                 <Avatar src={BOT_AVATAR} alt="Assistant" isOnline={true} />
                             )}
-
-
                             <div>
                                 <div
                                     className={cn(
-                                        "px-4 py-3 rounded-2xl text-lg",
+                                        "px-5 py-3 rounded-2xl text-lg break-words shadow-sm",
                                         message.sender === "user"
-                                            ? `${themes[theme].primary} text-white text-lg rounded-br-none`
-                                            : "bg-gray-100 text-gray-800 rounded-bl-none"
+                                            ? `${themes[theme].primary} text-white rounded-br-none`
+                                            : "bg-white text-gray-800 rounded-bl-none border border-gray-200"
                                     )}
                                 >
                                     {message.sender === "bot" ? (
                                         message.id === messages[messages.length - 1].id &&
                                             messages.length > initialMessages.length ? (
                                             <div>
-                                                {displayedText}
+                                                {displayedText.split("\n").map((line, index) => (
+                                                    <span key={index} className="block">
+                                                        {line}
+                                                    </span>
+                                                ))}
                                                 {!isComplete && (
-                                                    <span className="inline-block text-lg w-1 h-4 ml-1 bg-gray-400 animate-pulse" />
+                                                    <span className="inline-block w-1 h-4 ml-1 bg-gray-400 animate-pulse" />
                                                 )}
                                             </div>
                                         ) : (
-                                            message.content
+                                            <div>
+                                                {message.content.split("\n").map((line, index) => (
+                                                    <span key={index} className="block">
+                                                        {line}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         )
                                     ) : (
                                         message.content
                                     )}
                                 </div>
                                 {message.options && message.options.length > 0 && (
-                                    <div className="mt-3 flex flex-wrap gap-2">
+                                    <div className="mt-3 flex flex-wrap gap-3">
                                         {message.options.map((option) => (
                                             <Button
                                                 key={option}
@@ -345,7 +353,6 @@ const ChatInterfaceContent: React.FC = () => {
                                             >
                                                 {option}
                                             </Button>
-
                                         ))}
                                     </div>
                                 )}
@@ -355,25 +362,26 @@ const ChatInterfaceContent: React.FC = () => {
                             )}
                         </motion.div>
                     ))}
-                    {isTyping && hasUserSentMessage && messages[messages.length - 1]?.sender !== "bot" && (
-                        <div className="flex items-start gap-3">
-                            <Avatar src={BOT_AVATAR} alt="Assistant" isOnline={true} />
-                            <TypingIndicator />
-                        </div>
-                    )}
+                    {isTyping &&
+                        hasUserSentMessage &&
+                        messages[messages.length - 1]?.sender !== "bot" && (
+                            <div className="flex items-start gap-4">
+                                <Avatar src={BOT_AVATAR} alt="Assistant" isOnline={true} />
+                                <TypingIndicator />
+                            </div>
+                        )}
                 </AnimatePresence>
                 <div ref={messagesEndRef} />
                 <Confetti isActive={showConfetti} />
             </div>
 
-            <div className="p-6 border-t border-gray-100 bg-white/90" style={{ zIndex: 10 }}>
+            <div className="p-6 border-gray-100" style={{ zIndex: 10 }}>
                 {!formComplete ? (
                     <ChatInput
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onSend={handleSendMessage}
                         onKeyDown={handleKeyDown}
-
                     />
                 ) : (
                     <div className="flex justify-center">
@@ -385,9 +393,7 @@ const ChatInterfaceContent: React.FC = () => {
                         </Button>
                     </div>
                 )}
-                <div className="text-xs text-center text-gray-400 mt-4">
-                    Your Personal AI BOT
-                </div>
+                <div className="text-xs text-center text-gray-400 mt-4">Your Personal AI BOT</div>
             </div>
         </div>
     );

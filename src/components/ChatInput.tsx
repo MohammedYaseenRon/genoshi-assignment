@@ -4,15 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/app/context/ThemeContext";
 import { cn } from "@/lib/utils";
-
-interface ChatInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSend: () => void;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-  placeholder?: string;
-  disabled?: boolean;
-}
+import { ChatInputProps } from "@/state/types";
 
 export const ChatInput: React.FC<ChatInputProps> = ({
   value,

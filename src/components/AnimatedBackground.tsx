@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
-
-interface Particle {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  opacity: number;
-  duration: number;
-}
+import { Particle } from "@/state/types";
 
 const AnimatedBackground: React.FC = () => {
   const [particles, setParticles] = useState<Particle[]>([]);

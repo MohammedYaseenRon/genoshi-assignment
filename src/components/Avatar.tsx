@@ -1,14 +1,7 @@
-// Avatar.tsx
 import React from "react";
 import { cn } from "@/lib/utils";
+import { AvatarProps } from "@/state/types";
 
-interface AvatarProps {
-  src?: string;
-  alt?: string;
-  isOnline?: boolean;
-  size?: "sm" | "md" | "lg";
-  className?: string;
-}
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,

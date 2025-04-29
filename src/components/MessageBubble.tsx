@@ -4,16 +4,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Avatar } from "./Avatar";
 import { useTheme } from "@/app/context/ThemeContext";
-
-export interface EnhancedMessageProps {
-  id: string;
-  content: string;
-  sender: "user" | "bot";
-  timestamp?: Date | string;
-  isQuestion?: boolean;
-  options?: string[];
-  avatar?: string;
-}
+import { EnhancedMessageProps } from "@/state/types";
 
 export const EnhancedMessageBubble: React.FC<EnhancedMessageProps> = ({
   content,
@@ -26,7 +17,6 @@ export const EnhancedMessageBubble: React.FC<EnhancedMessageProps> = ({
   const { theme, themes } = useTheme();
   const isUser = sender === "user";
 
-  // Animation variants
   const variants = {
     initial: {
       opacity: 0,
